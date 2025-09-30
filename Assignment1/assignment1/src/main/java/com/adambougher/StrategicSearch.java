@@ -12,6 +12,11 @@ public class StrategicSearch extends SearchStrategy {
         shipCoordinates = new Vector<Pair>();
         
 
+        /// Check every 3rd cell in a row, then move to the next row. becuase the smallest ship is 3 cells long this will ensure
+        /// that we will always hit at least one cell of every ship.
+        /// If we hit a ship, we then use a recursive function to check all adjacent cells to find the rest of the ship.
+        /// We also keep track of visited cells to avoid checking the same cell multiple times.
+
         for (int row = 0; row < grid.getGrid().length; row++) {
 
             for (int col = 0; col < grid.getGrid()[row].length; col+=3) {
