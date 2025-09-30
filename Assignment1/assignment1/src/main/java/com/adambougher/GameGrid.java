@@ -17,8 +17,8 @@ public class GameGrid {
     }
 
     void SetShip(Ship ship) {
-        for (int i = 0; i < ship.pos.length; i++) {
-            grid[ship.pos[i][0]][ship.pos[i][1]] = 1;
+        for (Pair pos : ship.getPositions()) {
+            grid[pos.x][pos.y] = 1;
         }
     }
 
