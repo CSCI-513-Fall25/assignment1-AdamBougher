@@ -5,7 +5,7 @@ import java.util.Vector;
 public class SearchStrategy {
     int NumOfCells;
     String Name;
-    Vector<Vector<int[][]>> shipCoordinates;
+    Vector<Pair> shipCoordinates;
 
     void FindShip(GameGrid grid){
 
@@ -21,12 +21,12 @@ public class SearchStrategy {
     }
 
     void PrintShipsFound(){
-        System.out.println("Ships found at:");
-        for (Vector<int[][]> coord : shipCoordinates) {
-            for (int[][] pos : coord) {
-                System.out.println("Ship found at (" + pos[0] + "," + pos[1] + ")");
-            }
-        } 
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carrier found: ");
+        sb.append(shipCoordinates.get(0).toString());
+        sb.append(" to ");
+        sb.append(shipCoordinates.get(4).toString());
+        System.out.println("Ships found at coordinates: ");
     }
 
 }
