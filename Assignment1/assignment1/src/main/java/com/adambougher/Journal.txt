@@ -1,0 +1,2 @@
+i use statagy pattern and one superclass to define by search stratagies. i also use a few helper data structures and 
+abstractions to make acsessing game elements nicer looking
