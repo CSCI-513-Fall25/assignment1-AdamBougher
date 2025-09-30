@@ -12,4 +12,8 @@ public class Pair {
     public boolean compare(int first, int second) {
         return this.x == first && this.y == second;
     }
+
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
 }
