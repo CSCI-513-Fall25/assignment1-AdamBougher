@@ -3,14 +3,36 @@ package com.adambougher;
 import java.util.Vector;
 
 public class Ship {
-    int[][] pos;
+    private ShipType type = ShipType.NONE;
+    private Vector<Pair> pos = new Vector<Pair>();
 
-    Ship(Vector<Integer> coordinates, int size) {
-        pos = new int[size][2];
-        for (int i = 0; i < coordinates.size() / 2; i++) {
-            pos[i][0] = coordinates.get(i * 2);
-            pos[i][1] = coordinates.get(i * 2 + 1);
+    Ship(Vector<Pair> coordinates, ShipType type) {
+        pos = new Vector<>(coordinates);
+        this.type = type;
+    }
+
+    public Pair getFirstPosition() {
+        return pos.get(0);
+    }
+
+    public Pair getLastPosition() {
+        return pos.get(pos.size() - 1);
+    }
+
+    public void PrintShip() {
+        System.out.print(type + ": ");
+        for (Pair p : pos) {
+            System.out.print("(" + p.x + "," + p.y + ") ");
         }
+        System.out.println();
+    }
+
+    public ShipType getType() {
+        return type;
+    }
+
+    public Vector<Pair> getPositions() {
+        return new Vector<>(pos);
     }
 
 }
