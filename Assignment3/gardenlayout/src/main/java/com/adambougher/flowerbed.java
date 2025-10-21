@@ -1,8 +1,5 @@
 package com.adambougher;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -15,8 +12,8 @@ public class flowerbed implements moveable {
 	int width;
 	Color rectangleColor;
 	Rectangle rectangle;
-    List<moveable> innerShapes = new ArrayList<moveable>();
-    
+    java.util.List<moveable> innerShapes = new java.util.ArrayList<moveable>();
+
 
     public flowerbed(Point2D position, Color color, boolean movable){
         rectangle = new Rectangle();
@@ -30,9 +27,12 @@ public class flowerbed implements moveable {
 
     }
     
-    public void move(double dx, double dy) {  
+    public void move(double dx, double dy) { 
         rectangle.setY(rectangle.getY()+dy);  
         rectangle.setX(rectangle.getX()+dx);
+        for(moveable child: innerShapes){
+			child.move(dx,dy);
+		}
         
     }
 
@@ -50,6 +50,7 @@ public class flowerbed implements moveable {
 
     public void addChild(moveable shape){
 		innerShapes.add(shape);
+        System.out.println("Added shape to flowerbed");
 	}
 	
 	public void removeChild(moveable shape){
