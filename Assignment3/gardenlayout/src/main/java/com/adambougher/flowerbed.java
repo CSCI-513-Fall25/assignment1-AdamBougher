@@ -56,7 +56,12 @@ public class flowerbed implements moveable {
 	public void removeChild(moveable shape){
 		if(innerShapes.contains(shape)){
 			innerShapes.remove(shape);
+             System.out.println("Removed shape from flowerbed");
 		}
 	}
+
+    public boolean hasChild(moveable shape){
+        return innerShapes.contains(shape);
+    }
 
 }

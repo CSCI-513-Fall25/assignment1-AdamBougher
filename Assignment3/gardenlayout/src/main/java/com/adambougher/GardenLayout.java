@@ -1,56 +1,79 @@
 package com.adambougher;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 
 public class GardenLayout extends Application {
-    AnchorPane root;
+    javafx.scene.layout.AnchorPane root;
 	Scene scene;
 	Point2D lastPosition = null;
     Boolean isDragging = false;
-    List<moveable> shapes = new ArrayList<moveable>();
+    java.util.List<moveable> shapes = new java.util.ArrayList<moveable>();
     moveable currentShape = null;
     Point2D clickP;
-    flower f = new flower(new Point2D(100, 100), Color.RED, true);
-    flowerbed fb = new flowerbed(new Point2D(150, 150), Color.GREEN, true);
-    
-    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>(){
+
+    javafx.event.EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new javafx.event.EventHandler<javafx.scene.input.MouseEvent>(){
         @Override
-        public void handle(MouseEvent e){
+        public void handle(javafx.scene.input.MouseEvent e){
             clickP = new Point2D(e.getX(), e.getY());
             System.out.println("Clicked at: " + clickP.getX() + ", " + clickP.getY());
             String eventName = e.getEventType().getName();
 
-            currentShape = getCurrentShape(clickP);
             
+            if(!isDragging && (currentShape = getCurrentShape(clickP)) == null){
+                return;
+            }
 
             switch(eventName){
                 case "MOUSE_DRAGGED":
-                    isDragging = true;
-                    if(lastPosition != null){
+                    if(currentShape instanceof flower){
+                        for(moveable container: shapes){
+                            if (container instanceof flowerbed && ((flowerbed)container).hasChild(currentShape)){
+                                ((flowerbed)container).removeChild(currentShape);
+                                break;
+                            }
+                            
+                        } 
+                    }
+                    if(lastPosition != null && currentShape != null){
+                        isDragging = true;
+
+                        if(shapes.contains(currentShape)){
+                            shapes.remove(currentShape);
+                        }
+
                         System.out.println("Dragging");
                         double deltaX = clickP.getX() - lastPosition.getX();
                         double deltaY = clickP.getY() - lastPosition.getY();
                         currentShape.move(deltaX, deltaY);
                     }
                 break;
-                case "MOUSE_RELEASED":
-                    if(isDragging){
-                        isDragging = false;
-                        currentShape = null;
-                        System.out.println("Stopped Dragging");
-                    }
+                case "MOUSE_RELEASED":  
+                if(!isDragging){
+                    return;
+                }
+                isDragging = false;
+
+                if(shapes.contains(currentShape) == false){
+                    shapes.add(currentShape);
+                }
+
+                if(currentShape instanceof flower){
+        			for(moveable container: shapes){
+            			if (container instanceof flowerbed && container.ContainsPoint(clickP)){
+            				((flowerbed)container).addChild(currentShape);
+            				break;
+            			}
+            			
+            		} 
+    			}
+
+                currentShape = null;
+                System.out.println("Stopped Dragging");
+                
                 break;
             }
             lastPosition = clickP;
@@ -69,13 +92,14 @@ public class GardenLayout extends Application {
     }
 
     @Override
-    public void start(Stage s) throws IOException {
-        root = new AnchorPane();
-
+    public void start(javafx.stage.Stage s) throws IOException {
+        root = new javafx.scene.layout.AnchorPane();
         scene = new Scene(root, 300, 300);
 
-        shapes.add(fb);
-        shapes.add(f);
+
+        shapes.add(new flowerbed(new Point2D(150, 150), javafx.scene.paint.Color.GREEN, true));
+        shapes.add(new flower(new Point2D(100, 100), javafx.scene.paint.Color.RED, true));
+
         for (moveable moveable : shapes) {
             root.getChildren().add((moveable.getShape()));
         }
